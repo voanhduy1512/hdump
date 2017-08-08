@@ -3,15 +3,32 @@ module Main where
 import System.Environment
 import Text.Read
 import Hdump
+import Options.Applicative
+import Data.Monoid ((<>))
+
+data CommandLineOptions = CommandLineOptions {
+    port :: Int
+}
+
+commandLineOptions :: Parser CommandLineOptions
+commandLineOptions = CommandLineOptions <$> option auto
+                      ( long "port"
+                      <> short 'p'
+                      <> metavar "PORT"
+                      <> value (3000 :: Int)
+                      <> help "Port that application will listen on")
 
 main :: IO ()
 main = do
-  port <- getPort
-  case port of
-    Left a -> print a
-    Right p -> startApp p
+    opt <- execParser opts
+    portString' <- (>>= readMaybe) <$> lookupEnv "HDUMP_PORT"
+    startApp $ getPort portString' $ port opt
+  where
+    opts = info (helper <*> commandLineOptions)
+      ( fullDesc
+      <> progDesc "Simple server that captures all requests to it"
+      <> header "Hdump - make it easy to debug your api requests")
 
-getPort :: IO (Either String Int)
-getPort = do
-  port <- getEnv "HDUMP_PORT"
-  return $ readEither port
+getPort :: Maybe Int -> Int -> Int
+getPort (Just p) _ = p
+getPort Nothing p = p
