@@ -3,5 +3,4 @@ extra-package-dbs: []
 packages:
 - .
 extra-deps:
-- optparse-applicative-0.14.0.0
-resolver: lts-9.0
+resolver: lts-8.24
