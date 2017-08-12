@@ -2,8 +2,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main (main) where
 
-import Lib (app)
+import Hdump (app)
 import Test.Hspec
+
 import Test.Hspec.Wai
 import Test.Hspec.Wai.JSON
 
@@ -11,4 +12,7 @@ main :: IO ()
 main = hspec spec
 
 spec :: Spec
-spec = undefined
+spec =
+  describe "nothing" $ do
+    it "be true" $ do
+      True `shouldBe` True
