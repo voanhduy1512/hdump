@@ -9,6 +9,6 @@ getRequestBody req = do
          bs <- requestBody req
          if S8.null bs
              then return $ front []
-             else loop $ front . (bs:)
+             else loop ( front . (bs:) )
   body <- loop id
   return (mconcat body)

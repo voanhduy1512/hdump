@@ -21,7 +21,7 @@ commandLineOptions = CommandLineOptions <$> option auto
 main :: IO ()
 main = do
     opt <- execParser opts
-    portString' <- (>>= readMaybe) <$> lookupEnv "HDUMP_PORT"
+    portString' <- (readMaybe =<<) <$> lookupEnv "HDUMP_PORT"
     startApp $ getPort portString' $ port opt
   where
     opts = info (helper <*> commandLineOptions)
