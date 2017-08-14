@@ -12,6 +12,8 @@ main :: IO ()
 main = hspec spec
 
 spec :: Spec
+
+spec :: Spec
 spec =
   describe "nothing" $ do
     it "be true" $ do
